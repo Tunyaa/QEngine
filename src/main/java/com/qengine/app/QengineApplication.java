@@ -1,4 +1,4 @@
-package com.qengine.qengine;
+package com.qengine.app;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
