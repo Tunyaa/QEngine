@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtUtils {
 
-    private final String SECRET_KEY = "ваш_секретный_ключ_минимум_32_символа";
+    private final String SECRET_KEY = "sfHs6fHWodsWAFwdw27eN36FZI8of2e84542h8Ea0ofnr0F8De5453q4Fe0g3pi";
     private final long EXPIRATION_TIME = 86400000;
     
     public String generateToken(User user){
