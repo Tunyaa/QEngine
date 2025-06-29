@@ -1,0 +1,4 @@
+<h1>Админ-панель</h1>
+<div th:unless="${#authentication.principal.authorities[0].authority == 'ROLE_ADMIN'}">
+    Доступ запрещён!
+</div>

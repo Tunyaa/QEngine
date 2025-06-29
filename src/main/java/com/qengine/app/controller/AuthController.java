@@ -4,6 +4,7 @@ import com.qengine.app.DTO.AuthRequest;
 import com.qengine.app.config.JwtUtils;
 import com.qengine.app.model.User;
 import com.qengine.app.repository.UserRepository;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -37,7 +38,7 @@ public class AuthController {
     }
     
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody AuthRequest request){
+    public ResponseEntity<String> login(@RequestBody AuthRequest request, HttpServletResponse response){
         User user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new RuntimeException("User Not Found"));
         
@@ -46,7 +47,7 @@ public class AuthController {
         }
         
         String token = jwtUtils.generateToken(user);
-        
-        return ResponseEntity.ok(token);
+        response.addHeader("Set-Cookie", "token=" + token + "; Path=/"); //Куки
+        return ResponseEntity.ok("Успешный вход!");
     }
 }

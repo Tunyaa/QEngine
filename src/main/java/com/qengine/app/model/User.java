@@ -38,6 +38,7 @@ public class User implements UserDetails{
     @Column(unique = true)
     private String email;
     
+    @Column(nullable = false)
     private String role = "USER"; //Роль по умолчанию
 
     @Override
