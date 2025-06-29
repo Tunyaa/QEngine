@@ -1,6 +1,7 @@
 package com.qengine.app.controller;
 
 import com.qengine.app.DTO.AuthRequest;
+import com.qengine.app.config.JwtUtils;
 import com.qengine.app.model.User;
 import com.qengine.app.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,9 @@ public class AuthController {
     @Autowired
     private PasswordEncoder passwordEncoder;
     
+    @Autowired
+    private JwtUtils jwtUtils;
+    
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody User user){
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -34,7 +38,15 @@ public class AuthController {
     
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody AuthRequest request){
-        //Заглушка - позже добавим JWT # !$
-        return ResponseEntity.ok("Login successful (# !$ JWT)");
+        User user = userRepository.findByUsername(request.getUsername())
+                .orElseThrow(() -> new RuntimeException("User Not Found"));
+        
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new RuntimeException("Invalid password");
+        }
+        
+        String token = jwtUtils.generateToken(user);
+        
+        return ResponseEntity.ok(token);
     }
 }
