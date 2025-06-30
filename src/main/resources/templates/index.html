@@ -1,26 +1,17 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <title>QEngine</title>
-    </head>
-
-    <script>
-        // Пример: Получение списка проектов
-        fetch('/api/projects', {
-            headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('token')
-            }
-        })
-                .then(response => response.json())
-                .then(data => console.log(data));
-    </script>
-
-
-    <body>
-        <h1>Добро пожаловать в QEngine!</h1>
-        <div th:if="${#authentication.principal}">
-            Вы вошли как: <span th:text="${#authentication.principal.username}"></span>
-        </div>
-        <a href="/login">Войти</a> | <a href="/admin">Админка</a>
-    </body>
+<html lang="ru" xmlns:th"http://www.thymeleaf.org">
+<head>
+    <title>QEngine</title>
+</head>
+<body>
+    <h1>Добро пожаловать в QEngine!</h1>
+    
+    <!-- Проверяем, аутентифицирован ли пользователь -->
+    <div th:if="${#authorization.expression('isAuthenticated()')}">
+        Вы вошли как: 
+        <!-- Получаем имя через principal.name (для стандартного UserDetails) -->
+        <span th:text="${#authentication.name}"></span>
+    </div>
+    <a href="/login">Войти</a> | <a href="/admin">Админка</a>
+</body>
 </html>
